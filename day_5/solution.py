@@ -1,6 +1,7 @@
 import re
 import copy
 
+
 def split_input(input):
     input = input.split("\n\n")
 
@@ -9,17 +10,21 @@ def split_input(input):
 
     return stacks, moves
 
+
 def generate_moves(moves_input):
-    return re.sub("[^0-9]+", ",", moves_input).split(",")[1:] # Removes all the words from the string
+    # Removes all the words from the string
+    return re.sub("[^0-9]+", ",", moves_input).split(",")[1:]
+
 
 def generate_stacks(stacks_input):
     stacks_input = stacks_input.split("\n")
-    
-    del stacks_input[-1] # Don't need the last row of numbers
-    n = 4
-    stacks_input = [ [line[i:i+n].strip() for i in range(0, len(line), n)] for line in stacks_input]
 
-    num_stacks = len(stacks_input[-1]) 
+    del stacks_input[-1]  # Don't need the last row of numbers
+    n = 4
+    stacks_input = [[line[i:i+n].strip() for i in range(0, len(line), n)]
+                    for line in stacks_input]
+
+    num_stacks = len(stacks_input[-1])
 
     stacks = [[i+1] for i in range(num_stacks)]
     for i in range(-1, -len(stacks_input)-1, -1):
@@ -41,11 +46,13 @@ def move_cargo(stacks, moves, cratemover_9001=False):
         else:
             for _ in range(number):
                 stacks[to].append(stacks[frm].pop())
-    
+
     return stacks
 
+
 def get_top_cargo(stacks):
-    return ''.join( re.sub(r"[^A-Z]", "", stack[-1]) for stack in stacks if stack)
+    return ''.join(re.sub(r"[^A-Z]", "", stack[-1]) for stack in stacks if stack)
+
 
 def test_solution():
     test_input = """    [D]    
@@ -67,14 +74,18 @@ move 1 from 1 to 2"""
     test_stacks = move_cargo(test_stacks, test_moves)
     test_stacks_2 = move_cargo(test_stacks_2, test_moves, cratemover_9001=True)
 
-    assert(get_top_cargo(test_stacks) == "CMZ")
-    assert(get_top_cargo(test_stacks_2) == "MCD")
+    assert (get_top_cargo(test_stacks) == "CMZ")
+    assert (get_top_cargo(test_stacks_2) == "MCD")
+
+
 test_solution()
+
 
 def get_input():
     with open("input.txt", "r") as f:
         input = f.read()
     return input
+
 
 def solutions():
     input = get_input()
@@ -89,5 +100,6 @@ def solutions():
 
     print("Solution 1: " + get_top_cargo(stacks))
     print("Solution 2: " + get_top_cargo(stacks_2))
+
 
 solutions()

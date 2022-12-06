@@ -2,7 +2,7 @@ with open("input.txt", "r") as f:
     strategy_guide = f.read().splitlines()
     strategy_guide = [round.split(" ") for round in strategy_guide]
 
-shape_scores = { 'A': 1, 'B': 2, 'C': 3, 'X': 1, 'Y': 2, 'Z': 3 }
+shape_scores = {'A': 1, 'B': 2, 'C': 3, 'X': 1, 'Y': 2, 'Z': 3}
 
 test_rounds = [['A', 'Y'], ['B', 'X'], ['C', 'Z']]
 
@@ -61,7 +61,7 @@ def get_correct_choice(opponent_choice, desired_outcome):
             return 'C'
         elif opponent_choice == 'C':
             return 'A'
-            
+
 
 def part_two(rounds):
     total_score = 0
@@ -77,8 +77,8 @@ def part_two(rounds):
     return total_score
 
 
-assert(part_one(test_rounds) == 15)
-assert(part_two(test_rounds) == 12)
+assert (part_one(test_rounds) == 15)
+assert (part_two(test_rounds) == 12)
 
 print(part_one(strategy_guide))
 print(part_two(strategy_guide))
