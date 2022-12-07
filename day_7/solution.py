@@ -5,9 +5,10 @@ class File:
 
     def get_name(self):
         return self.name
-    
+
     def get_size(self):
         return self.size
+
 
 class Dir:
     def __init__(self, name, parent=None) -> None:
@@ -58,6 +59,7 @@ class Dir:
 
         return self.get_name()
 
+
 def get_dirs(tree):
     dirs = []
     dirs_to_traverse = [tree]
@@ -73,12 +75,13 @@ def get_dirs(tree):
 
 
 def create_tree(terminal_output):
-    terminal_output = [line.split(" ") for line in terminal_output.splitlines()]
+    terminal_output = [line.split(" ")
+                       for line in terminal_output.splitlines()]
 
     tree = Dir("/")
     current_dir = tree
     for line in terminal_output[1:]:
-        if line[0] == "$": # Command
+        if line[0] == "$":  # Command
             if line[1] == "cd":
                 current_dir = current_dir.find(line[2])
         elif line[0] == "dir":
@@ -88,8 +91,9 @@ def create_tree(terminal_output):
 
     return tree
 
+
 def test_solution():
-    test_input= """$ cd /
+    test_input = """$ cd /
 $ ls
 dir a
 14848514 b.txt
@@ -114,10 +118,12 @@ $ ls
 7214296 k"""
     test_tree = create_tree(test_input)
 
-    dir_sizes = {dir: dir.get_size() for dir in get_dirs(test_tree) if dir.get_size() <= 100000}
+    dir_sizes = {dir: dir.get_size()
+                 for dir in get_dirs(test_tree) if dir.get_size() <= 100000}
     total_size = sum(dir_sizes.values())
-    assert(total_size == 95437)
-    assert(test_tree.get_size() == 48381165)
+    assert (total_size == 95437)
+    assert (test_tree.get_size() == 48381165)
+
 
 test_solution()
 
@@ -128,9 +134,23 @@ def solution():
 
     tree = create_tree(terminal_output)
 
-    
-    dir_sizes = {dir: dir.get_size() for dir in get_dirs(tree) if dir.get_size() <= 100000}
+    total_space = 70000000
+    desired_space = 30000000
+
+    dir_sizes = {dir: dir.get_size() for dir in get_dirs(tree)
+                 if dir.get_size() <= 100000}
     total_size = sum(dir_sizes.values())
-    print(total_size)
+
+    sorted_dir = {dir.get_name(): dir.get_size() for dir in get_dirs(tree)}
+    current_space = total_space - sorted_dir["/"]
+    space_to_free_up = abs(current_space - desired_space)
+
+    min_dir = {dir: size-space_to_free_up for dir, size in sorted_dir.items()}
+
+    min_dir = dict(sorted(min_dir.items(), key=lambda item: item[1]))
+
+    print("Solution 1:", total_size)
+    print("Solution 2:", sorted_dir["dqbnbl"])
+
 
 solution()
